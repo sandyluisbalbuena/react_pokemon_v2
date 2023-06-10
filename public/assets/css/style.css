@@ -225,5 +225,5 @@ border-top:#332c2c solid 4px;
 }
 
 .hero {
-    background-image: url('/src/assets/images/hero/hero.jpg'); height: 80vh; top:0;
+    background-image: url('../images/hero/hero.jpg'); height: 80vh; top:0;
 }
