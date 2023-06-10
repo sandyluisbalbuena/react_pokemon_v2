@@ -1,8 +1,141 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CardSplide from '../components/CardSplide'
 import PokemonImage from '../components/PokemonImage'
 
 const Pokedex = () => {
+
+	let [flavor_text, setflavor_text] = useState([]);
+	// let flavor_text = 'wew';
+
+	useEffect(()=>{
+		pokemonSearch('pikachu');
+	}, []);
+
+	
+	function pokemonSearch(pokemonNameName){
+		swal.close();
+		if(pokemonNameName == undefined && pokemonNameName == null){
+			var pname = document.getElementById('pokemonName');
+			var pokemonName = pname.value;
+		}
+		else{
+			var pokemonName = pokemonNameName;
+		}
+	
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth"
+		});
+	
+		// let pokemonrelatedtobutton = document.getElementById('pokemonrelatedtobutton');
+		// let pokemonEvolutionButton = document.getElementById('evolutionButton');
+		// let collapseExample1 = document.getElementById('collapseExample1');
+		// let collapseExample2 = document.getElementById('collapseExample2');
+	
+		// pokemonEvolutionButton.innerHTML = "SHOW";
+		// pokemonEvolutionButton.setAttribute('data-custom', '0');
+		// pokemonEvolutionButton.setAttribute('aria-expanded', 'false');
+		// pokemonrelatedtobutton.innerHTML = "SHOW";
+		// pokemonrelatedtobutton.setAttribute('data-custom', '0');
+		// pokemonrelatedtobutton.setAttribute('aria-expanded', 'false');
+		// collapseExample1.classList.remove('show');
+		// collapseExample2.classList.remove('show');
+		let pokemonImage = document.getElementById('pokemonImage');
+
+	
+		new Promise((resolve) => {
+			new Promise((resolve) => {
+				pokemonImage.classList.remove('animate__fadeIn');
+				pokemonImage.classList.add('animate__fadeOut');
+				setTimeout(() => resolve(), 2000);
+			}).then(() => {
+				pokemonImage.classList.remove('animate__fadeOut');
+				pokemonImage.setAttribute('src','/assets/images/misc/loader.gif');
+				pokemonImage.classList.add('animate__animated', 'animate__fadeIn');
+			});
+			setTimeout(() => resolve(), 3000);
+		}).then(() => {
+	
+			pokemonImage.classList.remove('animate__fadeIn');
+			pokemonImage.classList.add('animate__fadeIn');
+	
+			let existingChart = Chart.getChart("pokemonStatscanvas");
+	
+			if (existingChart) {
+				existingChart.destroy();
+			}
+	
+			let relatedTo = document.getElementById('relatedTo');
+			let cardTitlePokemonName = document.getElementById('cardTitlePokemonName');
+			let pokemonDescription = document.getElementById('pokemonDescription');
+			let pokemonAbilities = document.getElementById('pokemonAbilities');
+			let pokemonTypes = document.getElementById('pokemonTypes');
+			let pokemonAdvantage = document.getElementById('pokemonAdvantage');
+			let pokemonDisadvantage = document.getElementById('pokemonDisadvantage');
+			let myTable = document.getElementById("myTable");
+			let tbody = myTable.getElementsByTagName("tbody")[0];
+	
+			tbody.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			cardTitlePokemonName.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			pokemonDescription.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			pokemonAbilities.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			pokemonTypes.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			pokemonAdvantage.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			pokemonDisadvantage.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+
+			// console.log(pokemonName);
+	
+			axios.get('https://pokeapi.co/api/v2/pokemon/'+pokemonName)
+			.then(response => {
+				// pokemonName.value="";
+				// document.getElementById('pokemonName').value="";
+	
+				// console.log(response.data.species)
+	
+				// pokemonEvolutionButton.setAttribute('onclick', 'pokemon_evolution(`'+response.data.pokemonSpecies+'`)');
+				// pokemonrelatedtobutton.setAttribute('onclick', 'get_pokemon_related('+JSON.stringify(response.data.pokemonTypes)+')');
+				// pokemonImage.setAttribute('src','https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+response.data.pokemonId+'.png');
+				// pokemonImage.setAttribute('src','https://img.pokemondb.net/artwork/avif/'+response.data.pokemonName.toLowerCase()+'.avif');
+				// cardTitlePokemonName.textContent = response.data.pokemonName;
+				setflavor_text(response.data.species);   
+				// flavor_text(response.data.pokemonSpecies);
+				// pokemon_moves(response.data.pokemonMoves);
+				// pokemon_attributes(response.data.pokemonStats);
+				// pokemon_abilities(response.data.pokemonAbilities)
+				// pokemon_types(response.data.pokemonTypes)
+				// get_pokemon_advantages(response.data.pokemonTypes);
+				// get_pokemon_disadvantages(response.data.pokemonTypes);
+				// pokemon_evolution_trigger(response.data.pokemonSpecies);
+				// get_pokemon_cards(response.data.pokemonName);
+				// relatedTo.innerHTML='Pokemon related to '+response.data.pokemonName;
+
+				// flavor_text = response.data.pokemonSpecies;
+			})
+			.catch(() => { 
+
+				console.log('umay');
+	
+				tbody.innerHTML = ``;
+				cardTitlePokemonName.innerHTML = ``;
+				pokemonDescription.innerHTML = ``;
+				pokemonAbilities.innerHTML=``;
+				pokemonTypes.innerHTML=``;
+				pokemonAdvantage.innerHTML=``;
+				pokemonDisadvantage.innerHTML=``;
+	
+	
+				// pagboboUser(pokemonName);
+			})
+			.then(() => { 
+			})
+		});
+	}
+
+
+
+
+
+
 	return (
 		<div className="container">
 
@@ -13,7 +146,8 @@ const Pokedex = () => {
 
 				<div className="col-12 col-lg-3 mt-2">
 					<div className='pokedex-sidenav'>
-						<PokemonImage />
+						<PokemonImage data={flavor_text}/>
+						{/* <PokemonImage /> */}
 					</div>
 				</div>
 

@@ -1,14 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const PokemonImage = () => {
+const PokemonImage = (props) => {
 
 
+	console.log(props.data);
+
+
+	useEffect(()=>{
+		flavor_text(props.data.url);
+	});
+
+	function flavor_text(specieUrl){
+
+		axios.get(specieUrl)
+		.then(response => {
+	
+			response.data.flavor_text_entries.forEach(description => {
+				if(description.language.name == 'en'){
+					// forMonDescription = description.flavor_text;
+					document.getElementById('pokemonDescription').textContent = description.flavor_text;
+				}
+	
+				return;
+			});
+			
+		})
+		.catch(error => console.error('On get one pokemon error', error))
+		.then(() => { 
+	
+		})
+	}
 
 	return (
 		<div className="card my-1 animate__animated animate__fadeInLeft pokedexCard1" id="firstCard">
 
 			<div id="backgroundColor" className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-				<img id="pokemonImage" className="animate__animated animate__fadeIn animate__delay-1s p-3 img-fluid" src="https://img.pokemondb.net/artwork/avif/pikachu.avif" width="100%" height="100%"/>
+				<img id="pokemonImage" className="animate__animated animate__fadeIn animate__delay-1s p-3 img-fluid" src={`https://img.pokemondb.net/artwork/avif/${props.data.name}.avif`} width="100%" height="100%"/>
 				<a href="#!">
 					<div className="mask pokedex-mask"></div>
 				</a>
