@@ -5,6 +5,7 @@ import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonAdvantages from '../components/PokemonAdvantages';
 import PokemonDisadvantages from '../components/PokemonDisadvantages';
 import PokemonMoves from '../components/PokemonMoves';
+import PokemonStats from '../components/PokemonStats';
 
 const Pokedex = () => {
 
@@ -13,6 +14,7 @@ const Pokedex = () => {
 	let [pokemonNameForCard, setpokemonNameForCard] = useState([]);
 	let [abilities, setabilities] = useState([]);
 	let [moves, setmoves] = useState([]);
+	let [stats, setstats] = useState([]);
 
 	useEffect(()=>{
 		pokemonSearch('charizard');
@@ -99,8 +101,7 @@ const Pokedex = () => {
 				// cardTitlePokemonName.textContent = response.data.pokemonName;
 				setflavor_text(response.data.species);   
 				setmoves(response.data.moves);   
-				// pokemon_moves(response.data.pokemonMoves);
-				// pokemon_attributes(response.data.pokemonStats);
+				setstats(response.data.stats);   
 				setabilities(response.data.abilities);
 				setpokemonTypes(response.data.types);
 				setpokemonNameForCard(response.data.name);
@@ -200,16 +201,15 @@ const Pokedex = () => {
 										<div className="col-12 col-lg-8">
 											<div className="row">
 												<h6>Moves</h6>
-													<PokemonMoves moves={moves} />
+												<PokemonMoves moves={moves} />
 											</div>
 										</div>
 
-										<div className="col-12 col-lg-4">
+										<div className="col-12 col-lg-3 offset-lg-1">
 											<div className="row">
-												<canvas id="pokemonStatscanvas" className=" mb-3"></canvas>
+												<PokemonStats stats={stats}/>
 											</div>
 										</div>
-										
 									</div>
 								</div>
 							</div>
