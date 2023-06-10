@@ -1,8 +1,10 @@
 import React from 'react'
+import CardSplide from '../components/CardSplide'
 
 const Pokedex = () => {
 	return (
 		<div className="container">
+
 			<section className="row mt-5">
 			</section>
 
@@ -21,12 +23,12 @@ const Pokedex = () => {
 
 							<div className="card-body text-center">
 								<h5 id="cardTitlePokemonName" className="card-title p-2 m-1">Pikachu</h5>
-								{/* @if(auth()->check()) */}
+								{/* @if(auth()->check())
 									<button className="mt-3 btn btn-dark" data-mdb-toggle="modal" data-mdb-target="#postThread">
 										<i className="far fa-pen-to-square me-1"></i>
 										Create a thread
 									</button>
-								{/* @endif */}
+								@endif  */}
 								<hr/>
 								<p className="card-text" id="pokemonDescription"></p>
 								<hr/>
@@ -183,19 +185,7 @@ const Pokedex = () => {
 			</section>
 
 			<section className="row mb-5">
-				<div className="col-12">
-					<div className="card my-1 pokedex-card-section">
-						<div className="card-body">
-							<h5 className="card-title" id="pokeCard"></h5>
-							<div className="splide" id="splideCards">
-								<div className="splide__track">
-									<ul className="splide__list" id="splideCardsId">
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<CardSplide />
 			</section>
 		</div>
 	)
