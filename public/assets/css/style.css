@@ -111,10 +111,13 @@ pokemonBackroundColor {
         width:100% !important;
     }
 
-    
- .summernote_container {
-    padding: 0 !important; 
- }
+    .notfound {
+        font-size: 5em !important;
+    }
+
+    .summernote_container {
+        padding: 0 !important; 
+    }
 }
 
 .cardForThread {
@@ -269,7 +272,7 @@ border-top:#332c2c solid 4px;
 .ripple {
     border-radius: 5px;
 }
-/* 
-.btn {
-    width:100%
-} */
+
+.notfound {
+    font-size: 10em;
+}

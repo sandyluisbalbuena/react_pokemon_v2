@@ -5,6 +5,7 @@ import Template from './layout/Template'
 import Home from './pages/Home'
 import Pokedex from './pages/Pokedex'
 import Pokecard from './pages/Pokecard'
+import Notfound from './pages/Notfound'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
           <Route path='/pokedex' element={<Pokedex />}/>
           <Route path='/pokecard' element={<Pokecard />}/>
         </Route>
+        <Route path='*' element={<Notfound />}/>
       </Routes>
     </>
   )

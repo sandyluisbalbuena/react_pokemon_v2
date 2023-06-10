@@ -3,11 +3,8 @@ import React, { useEffect } from 'react'
 const CardSplide = () => {
 
 	useEffect(()=> {
-		get_pokemon_cards('Pikachu')
+		// get_pokemon_cards('Pikachu')
 	}, []);
-
-	
-	
 
 	function get_pokemon_cards(pokemonName){
 
