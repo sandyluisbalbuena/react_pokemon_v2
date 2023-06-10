@@ -4,6 +4,7 @@ import PokemonImage from '../components/PokemonImage'
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonAdvantages from '../components/PokemonAdvantages';
 import PokemonDisadvantages from '../components/PokemonDisadvantages';
+import PokemonMoves from '../components/PokemonMoves';
 
 const Pokedex = () => {
 
@@ -11,9 +12,11 @@ const Pokedex = () => {
 	let [pokemonTypes, setpokemonTypes] = useState([]);
 	let [pokemonNameForCard, setpokemonNameForCard] = useState([]);
 	let [abilities, setabilities] = useState([]);
+	let [moves, setmoves] = useState([]);
 
 	useEffect(()=>{
 		pokemonSearch('charizard');
+
 	}, []);
 	
 	function pokemonSearch(pokemonNameName){
@@ -95,11 +98,10 @@ const Pokedex = () => {
 				// pokemonImage.setAttribute('src','https://img.pokemondb.net/artwork/avif/'+response.data.pokemonName.toLowerCase()+'.avif');
 				// cardTitlePokemonName.textContent = response.data.pokemonName;
 				setflavor_text(response.data.species);   
+				setmoves(response.data.moves);   
 				// pokemon_moves(response.data.pokemonMoves);
 				// pokemon_attributes(response.data.pokemonStats);
-				// pokemon_abilities(response.data.pokemonAbilities)
 				setabilities(response.data.abilities);
-				// pokemon_types(response.data.pokemonTypes)
 				setpokemonTypes(response.data.types);
 				setpokemonNameForCard(response.data.name);
 				// get_pokemon_advantages(response.data.pokemonTypes);
@@ -194,32 +196,11 @@ const Pokedex = () => {
 
 
 									<div className="row my-4">
-										
+
 										<div className="col-12 col-lg-8">
 											<div className="row">
 												<h6>Moves</h6>
-												<table id="myTable" className="display nowrap mb-3 pokedexTable">
-													<thead>
-														<tr>
-															<th>Name</th>
-															<th>Accuracy</th>
-															<th>Damage class</th>
-															<th>Power</th>
-															<th>PP</th>
-															<th>type</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-														</tr>
-													</tbody>
-												</table>
+													<PokemonMoves moves={moves} />
 											</div>
 										</div>
 
