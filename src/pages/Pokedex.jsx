@@ -13,9 +13,9 @@ const Pokedex = () => {
 						<div className="card my-1 animate__animated animate__fadeInLeft pokedexCard1" id="firstCard">
 
 							<div id="backgroundColor" className="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-								<img id="pokemonImage" className="animate__animated animate__fadeIn animate__delay-1s p-3" src="https://img.pokemondb.net/artwork/avif/pikachu.avif" width="100%" height="100%" className="img-fluid"/>
+								<img id="pokemonImage" className="animate__animated animate__fadeIn animate__delay-1s p-3 img-fluid" src="https://img.pokemondb.net/artwork/avif/pikachu.avif" width="100%" height="100%"/>
 								<a href="#!">
-									<div className="mask"></div>
+									<div className="mask pokedex-mask"></div>
 								</a>
 							</div>
 
