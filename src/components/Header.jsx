@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
@@ -7,7 +7,15 @@ const Header = () => {
 
   let handleNavLinkClick = (link) => {
     setActiveLink(link);
+    localStorage.setItem('activeLink', link);
   };
+
+  useEffect(() => {
+    const storedActiveLink = localStorage.getItem('activeLink');
+    if (storedActiveLink) {
+      setActiveLink(storedActiveLink);
+    }
+  }, []);
 
 
   return (

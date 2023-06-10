@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import CardSplide from '../components/CardSplide'
 import PokemonImage from '../components/PokemonImage'
+import PokemonAbilities from '../components/PokemonAbilities';
+import PokemonAdvantages from '../components/PokemonAdvantages';
+import PokemonDisadvantages from '../components/PokemonDisadvantages';
 
 const Pokedex = () => {
 
 	let [flavor_text, setflavor_text] = useState([]);
-	// let flavor_text = 'wew';
+	let [pokemonTypes, setpokemonTypes] = useState([]);
+	let [pokemonNameForCard, setpokemonNameForCard] = useState([]);
+	let [abilities, setabilities] = useState([]);
 
 	useEffect(()=>{
-		pokemonSearch('pikachu');
+		pokemonSearch('charizard');
 	}, []);
-
 	
 	function pokemonSearch(pokemonNameName){
 		swal.close();
@@ -31,7 +35,6 @@ const Pokedex = () => {
 		// let pokemonEvolutionButton = document.getElementById('evolutionButton');
 		// let collapseExample1 = document.getElementById('collapseExample1');
 		// let collapseExample2 = document.getElementById('collapseExample2');
-	
 		// pokemonEvolutionButton.innerHTML = "SHOW";
 		// pokemonEvolutionButton.setAttribute('data-custom', '0');
 		// pokemonEvolutionButton.setAttribute('aria-expanded', 'false');
@@ -40,9 +43,9 @@ const Pokedex = () => {
 		// pokemonrelatedtobutton.setAttribute('aria-expanded', 'false');
 		// collapseExample1.classList.remove('show');
 		// collapseExample2.classList.remove('show');
+
 		let pokemonImage = document.getElementById('pokemonImage');
 
-	
 		new Promise((resolve) => {
 			new Promise((resolve) => {
 				pokemonImage.classList.remove('animate__fadeIn');
@@ -58,13 +61,10 @@ const Pokedex = () => {
 	
 			pokemonImage.classList.remove('animate__fadeIn');
 			pokemonImage.classList.add('animate__fadeIn');
-	
 			let existingChart = Chart.getChart("pokemonStatscanvas");
-	
 			if (existingChart) {
 				existingChart.destroy();
 			}
-	
 			let relatedTo = document.getElementById('relatedTo');
 			let cardTitlePokemonName = document.getElementById('cardTitlePokemonName');
 			let pokemonDescription = document.getElementById('pokemonDescription');
@@ -75,46 +75,42 @@ const Pokedex = () => {
 			let myTable = document.getElementById("myTable");
 			let tbody = myTable.getElementsByTagName("tbody")[0];
 	
-			tbody.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-			cardTitlePokemonName.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-			pokemonDescription.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-			pokemonAbilities.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-			pokemonTypes.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-			pokemonAdvantage.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-			pokemonDisadvantage.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
-
+			// tbody.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			// cardTitlePokemonName.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			// pokemonDescription.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			// pokemonAbilities.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			// pokemonTypes.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			// pokemonAdvantage.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
+			// pokemonDisadvantage.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
 			// console.log(pokemonName);
 	
 			axios.get('https://pokeapi.co/api/v2/pokemon/'+pokemonName)
 			.then(response => {
 				// pokemonName.value="";
 				// document.getElementById('pokemonName').value="";
-	
-				// console.log(response.data.species)
-	
+				console.log(response.data)
 				// pokemonEvolutionButton.setAttribute('onclick', 'pokemon_evolution(`'+response.data.pokemonSpecies+'`)');
 				// pokemonrelatedtobutton.setAttribute('onclick', 'get_pokemon_related('+JSON.stringify(response.data.pokemonTypes)+')');
 				// pokemonImage.setAttribute('src','https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+response.data.pokemonId+'.png');
 				// pokemonImage.setAttribute('src','https://img.pokemondb.net/artwork/avif/'+response.data.pokemonName.toLowerCase()+'.avif');
 				// cardTitlePokemonName.textContent = response.data.pokemonName;
 				setflavor_text(response.data.species);   
-				// flavor_text(response.data.pokemonSpecies);
 				// pokemon_moves(response.data.pokemonMoves);
 				// pokemon_attributes(response.data.pokemonStats);
 				// pokemon_abilities(response.data.pokemonAbilities)
+				setabilities(response.data.abilities);
 				// pokemon_types(response.data.pokemonTypes)
+				setpokemonTypes(response.data.types);
+				setpokemonNameForCard(response.data.name);
 				// get_pokemon_advantages(response.data.pokemonTypes);
 				// get_pokemon_disadvantages(response.data.pokemonTypes);
 				// pokemon_evolution_trigger(response.data.pokemonSpecies);
 				// get_pokemon_cards(response.data.pokemonName);
 				// relatedTo.innerHTML='Pokemon related to '+response.data.pokemonName;
-
 				// flavor_text = response.data.pokemonSpecies;
 			})
 			.catch(() => { 
-
 				console.log('umay');
-	
 				tbody.innerHTML = ``;
 				cardTitlePokemonName.innerHTML = ``;
 				pokemonDescription.innerHTML = ``;
@@ -122,18 +118,12 @@ const Pokedex = () => {
 				pokemonTypes.innerHTML=``;
 				pokemonAdvantage.innerHTML=``;
 				pokemonDisadvantage.innerHTML=``;
-	
-	
 				// pagboboUser(pokemonName);
 			})
 			.then(() => { 
 			})
 		});
 	}
-
-
-
-
 
 
 	return (
@@ -146,13 +136,13 @@ const Pokedex = () => {
 
 				<div className="col-12 col-lg-3 mt-2">
 					<div className='pokedex-sidenav'>
-						<PokemonImage data={flavor_text}/>
-						{/* <PokemonImage /> */}
+						<PokemonImage flavor_text={flavor_text} pokemonTyping={pokemonTypes}/>
 					</div>
 				</div>
 
 				<div className="col-12 col-lg-9 mt-2">
 					<div className="container-fluid">
+
 						<div className="row">
 							<div className="card my-1 px-1 animate__animated animate__fadeInUp" id="secondCard">
 								<div className="card-body container-fluid">
@@ -160,23 +150,21 @@ const Pokedex = () => {
 										<div className="col-12 col-lg-4">
 											<h6 className="card-title">Abilities</h6>
 											<div id="pokemonAbilities">
-												{/* <?php foreach ($pokemonData['pokemonAbilities'] as $ability): ?> */}
-													<button className="btn btn-dark m-1" type="button">Static</button>
-												{/* <?php endforeach; ?> */}
+												<PokemonAbilities abilities={abilities}/>
 											</div>
 										</div>
 								
 										<div className="col-12 col-lg-4">
 											<h6 className="card-title">Advantages</h6>
 											<div id="pokemonAdvantage">
-												
+												<PokemonAdvantages pokemonTyping={pokemonTypes}/>
 											</div>
 										</div>
 
 										<div className="col-12 col-lg-4">
 											<h6 className="card-title">Disadvantages</h6>
 											<div id="pokemonDisadvantage">
-											
+												<PokemonDisadvantages pokemonTyping={pokemonTypes}/>
 											</div>
 										</div>
 
@@ -184,8 +172,8 @@ const Pokedex = () => {
 								</div>
 							</div>
 						</div>
-						<div className="row">
 
+						<div className="row">
 							<div className="card my-1 px-2 animate__animated animate__fadeInUp pokedexCard2" id="secondCard">
 								<div className="card-body container-fluid">
 
@@ -206,6 +194,7 @@ const Pokedex = () => {
 
 
 									<div className="row my-4">
+										
 										<div className="col-12 col-lg-8">
 											<div className="row">
 												<h6>Moves</h6>
@@ -233,6 +222,7 @@ const Pokedex = () => {
 												</table>
 											</div>
 										</div>
+
 										<div className="col-12 col-lg-4">
 											<div className="row">
 												<canvas id="pokemonStatscanvas" className=" mb-3"></canvas>
@@ -293,7 +283,7 @@ const Pokedex = () => {
 			</section>
 
 			<section className="row mb-5">
-				<CardSplide />
+				<CardSplide pokemonName={pokemonNameForCard}/>
 			</section>
 		</div>
 	)

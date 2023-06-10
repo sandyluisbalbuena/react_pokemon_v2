@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import Template from './layout/Template'
@@ -8,7 +7,6 @@ import Pokecard from './pages/Pokecard'
 import Notfound from './pages/Notfound'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>

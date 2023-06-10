@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 
-const CardSplide = () => {
+const CardSplide = (props) => {
 
 	useEffect(()=> {
-		// get_pokemon_cards('Pikachu')
+		// props.pokemonName?get_pokemon_cards(props.pokemonName):null;
 	}, []);
 
 	function get_pokemon_cards(pokemonName){
@@ -29,7 +29,7 @@ const CardSplide = () => {
 				rewind: true,
 			} ).mount();
 		}
-		document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
+		// document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
 		let cardLimit = 10;
 		axios.get(`https://api.pokemontcg.io/v1/cards?name=`+pokemonName)
 		.then(response => {
