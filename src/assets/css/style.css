@@ -220,3 +220,10 @@ border-top:#332c2c solid 4px;
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+.mask {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero {
+    background-image: url('/src/assets/images/hero/hero.jpg'); height: 80vh; top:0;
+}

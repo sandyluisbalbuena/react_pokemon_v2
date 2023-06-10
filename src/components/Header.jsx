@@ -17,11 +17,10 @@ const Header = () => {
         >
           <i className="fas fa-bars"></i>
         </button>
-
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <a className="navbar-brand mt-2 mt-lg-0" href="/">
             <img
-              src="src/assets/images/brand/pokemonBrandName.png"
+              src="./src/assets/images/brand/pokemonBrandName.png"
               height="30"
               alt="Pokemon"
               loading="lazy"
@@ -31,15 +30,14 @@ const Header = () => {
             <li className="nav-item">
               <Link to='/' className='nav-link'>Home</Link>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <Link to='/' className='nav-link'>Pokedex</Link>
             </li>
-            <li class="nav-item">
+            <li className="nav-item">
               <Link to='/' className='nav-link'>Pokecard</Link>
             </li>
           </ul>
         </div>
-
       
       </div>
     </nav>
