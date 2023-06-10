@@ -31,14 +31,13 @@ const Header = () => {
               <Link to='/' className='nav-link hvr-underline-from-center'>Home</Link>
             </li>
             <li className="nav-item">
-              <Link to='/' className='nav-link hvr-underline-from-center'>Pokedex</Link>
+              <Link to='/pokedex' className='nav-link hvr-underline-from-center'>Pokedex</Link>
             </li>
             <li className="nav-item">
-              <Link to='/' className='nav-link hvr-underline-from-center'>Pokecard</Link>
+              <Link to='/pokecard' className='nav-link hvr-underline-from-center'>Pokecard</Link>
             </li>
           </ul>
         </div>
-      
       </div>
     </nav>
   </header>
