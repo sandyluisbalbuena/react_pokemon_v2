@@ -225,8 +225,7 @@ const Pokedex = () => {
 							<div className="card my-1 px-1 pokedexCard3" id="secondCard">
 								<div className="card-body container-fluid">
 									<div className="row">
-										<h6 className="card-title" id="relatedTo">Pokemon related to Pikachu</h6>
-										<PokemonRelated related={related} searchFunction = {pokemonSearch}/>
+										<PokemonRelated related={related} pokemonName={pokemonNameForCard} searchFunction = {pokemonSearch}/>
 									</div>
 								</div>
 							</div>

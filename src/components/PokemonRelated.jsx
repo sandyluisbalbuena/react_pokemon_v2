@@ -116,6 +116,7 @@ const PokemonRelated = (props) => {
 
   return (
     <>
+			<h6 className="card-title" id="relatedTo">Pokemon related to {props.pokemonName}</h6>
       <button id="pokemonrelatedtobutton" data-custom="0" className="btn btn-dark" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
         Show
       </button>
