@@ -1,149 +1,118 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react';
 
 const PokemonRelated = (props) => {
+  const splideRef = useRef(null);
+  let splider = document.getElementById('splide1');
 
-
-  if(props.related.length != 0){
-    let pokemonrelatedtobutton = document.getElementById('pokemonrelatedtobutton');
-    let typing = ['fire','flying'];
-    pokemonrelatedtobutton.addEventListener('click', () => {
-      get_pokemon_related(typing);
-      // get_pokemon_related(props.related);
-    });
+  if(splider!=null){
+    splider.innerHTML = '';
   }
 
+  function pokemonSearch(name){
+    props.searchFunction(name);
+  }
 
-  function get_pokemon_related(pokemonTypes){
+  useEffect(() => {
+    if (props.related.length !== 0) {
+      let newtyping = [];
+      newtyping = props.related.map((type) => type.type.name);
 
+      console.log('type',newtyping);
 
-    let splider = document.getElementById('splide1');
-
-
-    if(document.getElementById('pokemonrelatedtobutton').getAttribute('data-custom') == 0){
-      splider.innerHTML=`<div class="spinner-border spinner-border-sm mt-2" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>`;
-      document.getElementById('pokemonrelatedtobutton').innerHTML="HIDE";
-
-
-      let pokemonStart = 0;
-      let pokemonEnd = 100;
+      const pokemonrelatedtobutton = document.getElementById('pokemonrelatedtobutton');
 
 
+      const handleClick = () => {
+        get_pokemon_related(newtyping);
+      };
+
+      pokemonrelatedtobutton.addEventListener('click', handleClick);
+
+      return () => {
+        pokemonrelatedtobutton.removeEventListener('click', handleClick);
+      };
+
+    }
+  }, [props.related]);
+
+  function get_pokemon_related(pokemonTypes) {
+
+    console.log('umay');
+
+    if (document.getElementById('pokemonrelatedtobutton').getAttribute('data-custom') === '0') {
+      splider.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>`;
+      document.getElementById('pokemonrelatedtobutton').innerHTML = 'HIDE';
+
+      let perPage = 6;
       if (window.innerWidth <= 768) {
-        var splide = new Splide( '.splide', {
-          type   : 'loop',
-          perPage: 2,
-          focus  : 'center',
-          arrows: false, 
-          pagination: false,
-          rewind: true,
-          drag   : 'free',
-        } ).mount();
+        perPage = 2;
       }
-      else{
-        var splide = new Splide( '.splide', {
-          type   : 'loop',
-          perPage: 6,
-          focus  : 'center',
-          arrows: false, 
-          pagination: false,
-          rewind: true,
-          drag   : 'free',
-        } ).mount();
-      }
-      if(splide.Components.Elements.slides.length > 0)
-      {
-        document.getElementById('splide1').innerHTML='';
-        splide.destroy();
-        if (window.innerWidth <= 768) {
-          var splide = new Splide( '.splide', {
-            type   : 'loop',
-            perPage: 2,
-            focus  : 'center',
-            arrows: false, 
-            pagination: false,
-            rewind: true,
-            drag   : 'free',
-          } ).mount();
-        }
-        else{
-          var splide = new Splide( '.splide', {
-            type   : 'loop',
-            perPage: 6,
-            focus  : 'center',
-            arrows: false, 
-            pagination: false,
-            rewind: true,
-            drag   : 'free',
-          } ).mount();
-        }
-      }
-      
-      axios.get('https://pokeapi.co/api/v2/pokemon?limit='+pokemonEnd+'&offset='+pokemonStart)
-      .then(response => {
 
-     
+      if (splideRef.current && splideRef.current.Components.Elements.slides.length > 0) {
+        splideRef.current.destroy();
+        splider.innerHTML = '';
+      }
+
+      const splide = new Splide('.splide', {
+        type: 'loop',
+        perPage: perPage,
+        focus: 'center',
+        arrows: false,
+        pagination: false,
+        rewind: true,
+        drag: 'free',
+      }).mount();
+
+      axios
+        .get('https://pokeapi.co/api/v2/pokemon?limit=100&offset=0')
+        .then((response) => {
           let pokemons = response.data.results;
+
           pokemons.forEach((pokemon) => {
+            axios
+              .get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
+              .then((response) => {
+                let array1 = response.data.types.map((type) => type.type.name);
+                let array2 = pokemonTypes;
 
-            axios.get(`https://pokeapi.co/api/v2/pokemon/`+pokemon.name)
-            .then(response => {
+                if (array1.some((item) => array2.includes(item))) {
+                  let commonType = array1.filter((item) => array2.includes(item));
 
-              let array1 =[];
-              let array2 =[];
-              response.data.types.forEach((type) => {
-                array1.push(type.type.name)
+                  console.log(commonType);
+
+                  let newImg = document.createElement('img');
+                  newImg.setAttribute('src', `https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/${response.data.id.toString().padStart(3, '0')}.png`);
+                  newImg.setAttribute('width', '100px');
+                  newImg.setAttribute('height', '100px');
+                  newImg.addEventListener('click', ()=>{pokemonSearch(pokemon.name)});
+                  newImg.className = 'hvr-float';
+
+                  let newSlide = document.createElement('li');
+                  newSlide.className = 'splide__slide';
+                  newSlide.appendChild(newImg);
+                  splide.add(newSlide);
+                }
+
+                document.getElementById('pokemonrelatedtobutton').setAttribute('data-custom', '1');
+                document.getElementById('pokemonrelatedtobutton').innerHTML = 'HIDE';
+
+
               })
-              pokemonTypes.forEach((type) => {
-                array2.push(type)
-              })
-              // console.log(array1.some(item => array2.includes(item)));
-              if(array1.some(item => array2.includes(item))){
-                // console.log(pokemon.name);
-                let commonType = array1.filter(item => array2.includes(item));
-                // EvolutionChainSection.innerHTML += '<img onclick="getonepokemondata(`'+nameAndId[0]+'`)" class="hvr-float" width="150px" src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+nameAndId[1].toString().padStart(3, `0`)+'.png">';
-                let newImg = document.createElement('img');
-                // newImg.classList.add('col-xs-1'); 
-                newImg.setAttribute('src', 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+response.data.id.toString().padStart(3, `0`)+'.png');
-                // newImg.setAttribute('src', 'https://img.pokemondb.net/artwork/avif/'+pokemon.name.toLowerCase()+'.avif');
-                newImg.setAttribute('width', '100px');
-                newImg.setAttribute('height', '100px');
-                // newImg.setAttribute('src', 'https://img.pokemondb.net/sprites/brilliant-diamond-shining-pearl/normal/1x/'+pokemon.name+'.png');
-                newImg.setAttribute('onclick', 'pokemonSearch(`'+pokemon.name+'`)');
-                newImg.className = 'hvr-float';
-                // newImg.setAttribute('href', '#');
-                // newImg.setAttribute('data-mdb-toggle', 'tooltip');
-                // newImg.setAttribute('title', 'Im '+pokemon.name+', and Im also a '+commonType[0]+' type.');
-                // new mdb.Tooltip(newImg).init();
-                // mdb.Tooltip.getInstance(newImg) || new mdb.Tooltip(newImg).show();
-                let newSlide = document.createElement('li');
-                newSlide.className = 'splide__slide';
-                // newSlide.textContent = 'New Slide';
-                newSlide.appendChild(newImg);
-                splide.add(newSlide);
-              }
-            })
-            .catch(error => console.error('On get one pokemon error', error))
-            .then(() => { 
-            })
+              .catch((error) => console.error('Error getting one pokemon:', error));
           });
-        
-      })
-      .catch(error => console.error('On get one pokemon error', error))
-      .then(() => { 
-        document.getElementById('pokemonrelatedtobutton').setAttribute('data-custom', '1')
-      })
-    }
-    else{
+        })
+        .catch((error) => console.error('Error getting pokemon list:', error))
+        .then(() => {
+          document.getElementById('pokemonrelatedtobutton').setAttribute('data-custom', '1');
+        });
+    } else {
       document.getElementById('pokemonrelatedtobutton').setAttribute('data-custom', '0');
-      document.getElementById('pokemonrelatedtobutton').innerHTML="SHOW";
-      splider.innerHTML="";
+      document.getElementById('pokemonrelatedtobutton').innerHTML = 'SHOW';
+      splider.innerHTML = '';
     }
-    
   }
-  
-
 
   return (
     <>
@@ -152,7 +121,7 @@ const PokemonRelated = (props) => {
       </button>
       <hr/>
       <div className="collapse" id="collapseExample1">
-        <div className="splide">
+        <div className="splide" id="splideRelated">
           <div className="splide__track">
             <ul className="splide__list" id="splide1">
             </ul>
@@ -160,7 +129,7 @@ const PokemonRelated = (props) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PokemonRelated
+export default PokemonRelated;

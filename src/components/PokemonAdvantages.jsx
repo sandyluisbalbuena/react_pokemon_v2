@@ -5,6 +5,7 @@ const PokemonAdvantages = (props) => {
 	let [adv,setadv] = useState([]);
 
 	useEffect(() => {
+		setadv([]);
 		props.pokemonTyping.forEach(type => {
 			axios.get(type.type.url)
 			.then(response => {

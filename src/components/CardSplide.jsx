@@ -31,7 +31,7 @@ const CardSplide = (props) => {
 				rewind: true,
 			} ).mount();
 		}
-		
+
 		document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
 		let cardLimit = 15;
 
@@ -83,7 +83,6 @@ const CardSplide = (props) => {
 					<div className="splide" id="splideCards">
 						<div className="splide__track">
 							<ul className="splide__list" id="splideCardsId">
-
 							</ul>
 						</div>
 					</div>

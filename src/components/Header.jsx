@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import PokedexContext from '../PokedexContext';
+import eventBus from '../eventBus';
 
 const Header = () => {
+
+  const pokemonSearch = useContext(PokedexContext);
 
   let [activeLink, setActiveLink] = useState('');
 
@@ -16,6 +20,12 @@ const Header = () => {
       setActiveLink(storedActiveLink);
     }
   }, []);
+
+
+  const handleSearch = () => {
+    
+    eventBus.publish('searchPokemon', document.getElementById('pokemonNameInputSearch').value);
+  }
 
 
   return (
@@ -56,8 +66,8 @@ const Header = () => {
 
           {activeLink === 'pokedex' && (
           <div id="pokemonSearchBar" className="d-flex input-group w-auto me-5">
-            <input id="pokemonName" type="search" className="form-control rounded" placeholder="Pokemon Name" aria-label="Search" aria-describedby="search-addon" required/>
-            <button className="btn bg-dark" type="submit">
+            <input id="pokemonNameInputSearch" type="search" className="form-control rounded" placeholder="Pokemon Name" aria-label="Search" aria-describedby="search-addon" required/>
+            <button className="btn bg-dark" onClick={handleSearch}>
               <i className="fas fa-search text-white"></i>
             </button>
           </div>
@@ -66,7 +76,7 @@ const Header = () => {
           {activeLink === 'pokecard' && (
             <div id="pokemonSearchBar" className="d-flex input-group w-auto me-5">
             <input id="pokemonName" type="search" className="form-control rounded" placeholder="Pokemon Card Name" aria-label="Search" aria-describedby="search-addon" required/>
-            <button className="btn bg-dark" type="submit">
+            <button className="btn bg-dark" onClick={handleSearch}>
               <i className="fas fa-search text-white"></i>
             </button>
             </div>

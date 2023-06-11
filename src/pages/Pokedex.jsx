@@ -8,6 +8,7 @@ import PokemonMoves from '../components/PokemonMoves';
 import PokemonStats from '../components/PokemonStats';
 import PokemonEvolutions from '../components/PokemonEvolutions';
 import PokemonRelated from '../components/PokemonRelated';
+import eventBus from '../eventBus';
 
 const Pokedex = () => {
 
@@ -21,10 +22,16 @@ const Pokedex = () => {
 	let [related, setrelated] = useState([]);
 
 	useEffect(()=>{
-		pokemonSearch('eevee');
-
+		pokemonSearch('magnemite');
 	}, []);
-	
+
+	useEffect(() => {
+		eventBus.subscribe('searchPokemon', pokemonSearch);
+		return () => {
+			eventBus.unsubscribe('searchPokemon', pokemonSearch);
+		};
+	}, []);
+
 	const pokemonSearch = (pokemonNameName) =>{
 		swal.close();
 		if(pokemonNameName == undefined && pokemonNameName == null){
@@ -52,8 +59,13 @@ const Pokedex = () => {
 		pokemonrelatedtobutton.setAttribute('aria-expanded', 'false');
 		collapseExample1.classList.remove('show');
 		collapseExample2.classList.remove('show');
-
 		let pokemonImage = document.getElementById('pokemonImage');
+
+
+		let splider = document.getElementById('splide1');
+		splider.innerHTML = '';
+
+
 
 		new Promise((resolve) => {
 			new Promise((resolve) => {
@@ -214,7 +226,7 @@ const Pokedex = () => {
 								<div className="card-body container-fluid">
 									<div className="row">
 										<h6 className="card-title" id="relatedTo">Pokemon related to Pikachu</h6>
-										<PokemonRelated related={related}/>
+										<PokemonRelated related={related} searchFunction = {pokemonSearch}/>
 									</div>
 								</div>
 							</div>

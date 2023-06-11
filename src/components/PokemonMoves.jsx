@@ -109,8 +109,8 @@ const PokemonMoves = (props) => {
 					<td>
 					<img
 						src={`/assets/images/pokemonTypes/${row[5]}text.png`}
-						style={{ width: '100%', height: '100%' }}
 						alt="Pokemon Types"
+						className='pokemonTypes'
 					/>
 					</td>
 				</tr>
