@@ -1,31 +1,45 @@
 import React, { useEffect, useState } from 'react';
 
 const PokemonMoves = (props) => {
+
+	const myTable = $('#myTable');
+
+
+	function reinitializeDataTable() {
+		if ($.fn.DataTable.isDataTable(myTable)) {
+		  $(myTable).DataTable().destroy();
+		}
+	}
+	reinitializeDataTable();
+
+
 	const [tableData, setTableData] = useState([]);
 
 	useEffect(() => {
+
 		const initDataTable = () => {
-		const myTable = $('#myTable');
 	
 		if ($.fn.DataTable.isDataTable(myTable)) {
 			myTable.DataTable().destroy();
 		}
-	
+
+		
 		myTable.DataTable({
-			language: {
-			searchPlaceholder: 'Search Move',
-			},
-			responsive: true,
-		});
+				language: {
+				searchPlaceholder: 'Search Move',
+				},
+				responsive: true,
+			});
 		};
 	
 		if (tableData.length > 0) {
-		initDataTable();
+			initDataTable();
 		}
 	}, [tableData]);
 
 	useEffect(() => {
 		const fetchMovesData = async () => {
+
 			try {
 				const movesData = await Promise.all(
 					props.moves.map((move) =>
@@ -66,42 +80,42 @@ const PokemonMoves = (props) => {
 
 	return (
 		<table id="myTable" className="display nowrap mb-3 pokedexTable">
-		<thead>
-			<tr>
-			<th>Name</th>
-			<th>Accuracy</th>
-			<th>Damage class</th>
-			<th>Power</th>
-			<th>PP</th>
-			<th>Type</th>
-			</tr>
-		</thead>
-		<tbody>
-			{tableData.map((row, index) => (
-			<tr key={index}>
-				<td>
-				<button
-					className="btn"
-					style={{ width: '100%' }}
-					onClick={() => moveDescription(row[6])}
-				>
-					{row[0].toUpperCase()}
-				</button>
-				</td>
-				<td>{row[1]}</td>
-				<td>{row[2]}</td>
-				<td>{row[3]}</td>
-				<td>{row[4]}</td>
-				<td>
-				<img
-					src={`/assets/images/pokemonTypes/${row[5]}text.png`}
-					style={{ width: '100%' }}
-					alt="Pokemon Types"
-				/>
-				</td>
-			</tr>
-			))}
-		</tbody>
+			<thead>
+				<tr>
+				<th>Name</th>
+				<th>Accuracy</th>
+				{/* <th>Damage class</th> */}
+				<th>Power</th>
+				<th>PP</th>
+				<th>Type</th>
+				</tr>
+			</thead>
+			<tbody>
+				{tableData.map((row, index) => (
+				<tr key={index}>
+					<td>
+					<button
+						className="btn"
+						style={{ width: '100%' }}
+						onClick={() => moveDescription(row[6])}
+					>
+						{row[0].toUpperCase()}
+					</button>
+					</td>
+					<td>{row[1]}</td>
+					{/* <td>{row[2]}</td> */}
+					<td>{row[3]}</td>
+					<td>{row[4]}</td>
+					<td>
+					<img
+						src={`/assets/images/pokemonTypes/${row[5]}text.png`}
+						style={{ width: '100%', height: '100%' }}
+						alt="Pokemon Types"
+					/>
+					</td>
+				</tr>
+				))}
+			</tbody>
 		</table>
 	);
 };

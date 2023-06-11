@@ -276,3 +276,7 @@ border-top:#332c2c solid 4px;
 .notfound {
     font-size: 10em;
 }
+
+.img-pokemon {
+    width: 150px;
+}

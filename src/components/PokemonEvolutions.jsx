@@ -2,20 +2,25 @@ import React, { useState } from 'react';
 
 const PokemonEvolutions = (props) => {
 
+  const [showEvolutions, setShowEvolutions] = useState(false);
+  const [evolutionChain, setEvolutionChain] = useState([]);
 
 	let evolutionButton = document.getElementById('evolutionButton');
 
   if(props.evolution.length != 0){
     axios.get(props.evolution.url)
     .then(response => {
-      console.log(response.data);
       evolutionButton.addEventListener('click',()=>pokemon_evolution(response.data.evolution_chain.url))
     })
     .catch(error => console.error('On get one pokemon error', error));
   }
 
+  function pokemonSearch(name){
+    props.searchFunction(name);
+  }
+
   function pokemon_evolution(pokemonEvolution) {
-    
+
     if(!pokemonEvolution){
       return;
     }
@@ -28,7 +33,6 @@ const PokemonEvolutions = (props) => {
                                         </div>`;
       axios.get(pokemonEvolution)
         .then(response => {
-          console.log(response.data);
           new Promise((resolve) => {
             setTimeout(() => resolve(), 1000);
           }).then(() => {
@@ -47,9 +51,20 @@ const PokemonEvolutions = (props) => {
 
             EvolutionChainSection.innerHTML = "";
             chainEvo.forEach(function (name) {
-              let nameAndId = name.replace('/', "");
-              nameAndId = nameAndId.split("__");
-              EvolutionChainSection.innerHTML += '<img onclick="pokemonSearch(`' + nameAndId[0] + '`)" class="hvr-float" width="150px" src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/' + nameAndId[1].toString().padStart(3, '0') + '.png">';
+              // let nameAndId = name.replace('/', "");
+              // nameAndId = nameAndId.split("__");
+              // EvolutionChainSection.innerHTML += '<img onClick={pokemonSearch(`' + nameAndId[0] + '`)} class="hvr-float" width="150px" src="https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/' + nameAndId[1].toString().padStart(3, '0') + '.png">';
+              let nameAndId = name.replace('/', '');
+              nameAndId = nameAndId.split('__');
+              const img = document.createElement('img');
+              img.className = 'hvr-float img-pokemon'; // Add the "img-pokemon" class
+              img.src = `https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/${nameAndId[1]
+                .toString()
+                .padStart(3, '0')}.png`;
+              img.alt = nameAndId[0];
+              img.addEventListener('click', () => pokemonSearch(nameAndId[0]));
+
+              EvolutionChainSection.appendChild(img);
             });
           });
         })

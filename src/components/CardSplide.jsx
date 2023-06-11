@@ -2,11 +2,13 @@ import React, { useEffect } from 'react'
 
 const CardSplide = (props) => {
 
-	useEffect(()=> {
-		// props.pokemonName?get_pokemon_cards(props.pokemonName):null;
-	}, []);
+	get_pokemon_cards(props.pokemonName)
 
 	function get_pokemon_cards(pokemonName){
+
+		if(pokemonName.length == 0){
+			return;
+		}
 
 		let cardSection = document.getElementById('splideCardsId');
 		cardSection.innerHTML="";
@@ -29,8 +31,11 @@ const CardSplide = (props) => {
 				rewind: true,
 			} ).mount();
 		}
-		// document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
-		let cardLimit = 10;
+		
+		document.getElementById('pokeCard').innerHTML=pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)+" Cards";
+		let cardLimit = 15;
+
+
 		axios.get(`https://api.pokemontcg.io/v1/cards?name=`+pokemonName)
 		.then(response => {
 			for(let i=0; i<cardLimit; i++){
@@ -38,8 +43,8 @@ const CardSplide = (props) => {
 				newImg.setAttribute('src', response.data.cards[i].imageUrlHiRes);
 				newImg.setAttribute('width', '90%');
 				newImg.setAttribute('style', 'z-index:10;');
-				newImg.setAttribute('loading', 'lazy');
 				newImg.className = 'cardloader';
+
 				newImg.addEventListener('click', () =>
 					forCards(response.data.cards[i].imageUrlHiRes, response.data.cards[i].id)
 				);
@@ -58,7 +63,6 @@ const CardSplide = (props) => {
 	}
 
 	function forCards(image, id){
-		console.log('wew');
 
 		Swal.fire({
 			html: '<img width="90%" src="'+image+'" class="rounded my-1"><button onclick="redirectToPokeCard(`'+id+'`)" class="btn btn-dark my-2">More Details</button>',

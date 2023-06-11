@@ -21,11 +21,11 @@ const Pokedex = () => {
 	let [related, setrelated] = useState([]);
 
 	useEffect(()=>{
-		pokemonSearch('charizard');
+		pokemonSearch('eevee');
 
 	}, []);
 	
-	function pokemonSearch(pokemonNameName){
+	const pokemonSearch = (pokemonNameName) =>{
 		swal.close();
 		if(pokemonNameName == undefined && pokemonNameName == null){
 			var pname = document.getElementById('pokemonName');
@@ -40,18 +40,18 @@ const Pokedex = () => {
 			behavior: "smooth"
 		});
 	
-		// let pokemonrelatedtobutton = document.getElementById('pokemonrelatedtobutton');
-		// let pokemonEvolutionButton = document.getElementById('evolutionButton');
-		// let collapseExample1 = document.getElementById('collapseExample1');
-		// let collapseExample2 = document.getElementById('collapseExample2');
-		// pokemonEvolutionButton.innerHTML = "SHOW";
-		// pokemonEvolutionButton.setAttribute('data-custom', '0');
-		// pokemonEvolutionButton.setAttribute('aria-expanded', 'false');
-		// pokemonrelatedtobutton.innerHTML = "SHOW";
-		// pokemonrelatedtobutton.setAttribute('data-custom', '0');
-		// pokemonrelatedtobutton.setAttribute('aria-expanded', 'false');
-		// collapseExample1.classList.remove('show');
-		// collapseExample2.classList.remove('show');
+		let pokemonrelatedtobutton = document.getElementById('pokemonrelatedtobutton');
+		let pokemonEvolutionButton = document.getElementById('evolutionButton');
+		let collapseExample1 = document.getElementById('collapseExample1');
+		let collapseExample2 = document.getElementById('collapseExample2');
+		pokemonEvolutionButton.innerHTML = "SHOW";
+		pokemonEvolutionButton.setAttribute('data-custom', '0');
+		pokemonEvolutionButton.setAttribute('aria-expanded', 'false');
+		pokemonrelatedtobutton.innerHTML = "SHOW";
+		pokemonrelatedtobutton.setAttribute('data-custom', '0');
+		pokemonrelatedtobutton.setAttribute('aria-expanded', 'false');
+		collapseExample1.classList.remove('show');
+		collapseExample2.classList.remove('show');
 
 		let pokemonImage = document.getElementById('pokemonImage');
 
@@ -71,18 +71,20 @@ const Pokedex = () => {
 			pokemonImage.classList.remove('animate__fadeIn');
 			pokemonImage.classList.add('animate__fadeIn');
 			let existingChart = Chart.getChart("pokemonStatscanvas");
+
 			if (existingChart) {
 				existingChart.destroy();
 			}
-			let relatedTo = document.getElementById('relatedTo');
+
+			// let relatedTo = document.getElementById('relatedTo');
 			let cardTitlePokemonName = document.getElementById('cardTitlePokemonName');
 			let pokemonDescription = document.getElementById('pokemonDescription');
 			let pokemonAbilities = document.getElementById('pokemonAbilities');
 			let pokemonTypes = document.getElementById('pokemonTypes');
 			let pokemonAdvantage = document.getElementById('pokemonAdvantage');
 			let pokemonDisadvantage = document.getElementById('pokemonDisadvantage');
-			let myTable = document.getElementById("myTable");
-			let tbody = myTable.getElementsByTagName("tbody")[0];
+			// let myTable = document.getElementById("myTable");
+			// let tbody = myTable.getElementsByTagName("tbody")[0];
 	
 			// tbody.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
 			// cardTitlePokemonName.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status"></div>`;
@@ -98,8 +100,7 @@ const Pokedex = () => {
 				// pokemonName.value="";
 				// document.getElementById('pokemonName').value="";
 				console.log(response.data)
-				// pokemonEvolutionButton.setAttribute('onclick', 'pokemon_evolution(`'+response.data.pokemonSpecies+'`)');
-				// pokemonrelatedtobutton.setAttribute('onclick', 'get_pokemon_related('+JSON.stringify(response.data.pokemonTypes)+')');
+				// pokemonrelatedtobutton.setAttribute('onClick', get_pokemon_related('+JSON.stringify(response.data.types)+'));
 				setflavor_text(response.data.species);   
 				setmoves(response.data.moves);   
 				setstats(response.data.stats);   
@@ -112,7 +113,6 @@ const Pokedex = () => {
 				// relatedTo.innerHTML='Pokemon related to '+response.data.pokemonName;
 			})
 			.catch(() => { 
-				console.log('umay');
 				tbody.innerHTML = ``;
 				cardTitlePokemonName.innerHTML = ``;
 				pokemonDescription.innerHTML = ``;
@@ -179,24 +179,7 @@ const Pokedex = () => {
 							<div className="card my-1 px-2 animate__animated animate__fadeInUp pokedexCard2" id="secondCard">
 								<div className="card-body container-fluid">
 
-									{/* <nav class="navbar navbar-expand-sm navbar-dark bg-dark rounded ">
-										<div class="container-fluid">
-											<div class="collapse navbar-collapse justify-content-center" id="navbarCenteredExample">
-												<ul class="navbar-nav mb-2 mb-lg-0">
-													<li class="nav-item hvr-underline-from-center">
-														<a class="nav-link" href="#">Moves</a>
-													</li>
-													<li class="nav-item hvr-underline-from-center">
-														<a class="nav-link" href="#">Attributes</a>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</nav> */}
-
-
 									<div className="row my-4">
-
 										<div className="col-12 col-lg-8">
 											<div className="row">
 												<h6>Moves</h6>
@@ -210,6 +193,7 @@ const Pokedex = () => {
 											</div>
 										</div>
 									</div>
+
 								</div>
 							</div>
 						</div>
@@ -219,7 +203,7 @@ const Pokedex = () => {
 								<div className="card-body container-fluid">
 									<div className="row">
 										<h6 className="card-title">Evolution</h6>
-										<PokemonEvolutions evolution={evolution}/>
+										<PokemonEvolutions evolution={evolution} searchFunction = {pokemonSearch}/>
 									</div>
 								</div>
 							</div>
