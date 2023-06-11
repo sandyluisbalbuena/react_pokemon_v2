@@ -6,6 +6,8 @@ import PokemonAdvantages from '../components/PokemonAdvantages';
 import PokemonDisadvantages from '../components/PokemonDisadvantages';
 import PokemonMoves from '../components/PokemonMoves';
 import PokemonStats from '../components/PokemonStats';
+import PokemonEvolutions from '../components/PokemonEvolutions';
+import PokemonRelated from '../components/PokemonRelated';
 
 const Pokedex = () => {
 
@@ -15,6 +17,8 @@ const Pokedex = () => {
 	let [abilities, setabilities] = useState([]);
 	let [moves, setmoves] = useState([]);
 	let [stats, setstats] = useState([]);
+	let [evolution, setevolution] = useState([]);
+	let [related, setrelated] = useState([]);
 
 	useEffect(()=>{
 		pokemonSearch('charizard');
@@ -96,21 +100,16 @@ const Pokedex = () => {
 				console.log(response.data)
 				// pokemonEvolutionButton.setAttribute('onclick', 'pokemon_evolution(`'+response.data.pokemonSpecies+'`)');
 				// pokemonrelatedtobutton.setAttribute('onclick', 'get_pokemon_related('+JSON.stringify(response.data.pokemonTypes)+')');
-				// pokemonImage.setAttribute('src','https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'+response.data.pokemonId+'.png');
-				// pokemonImage.setAttribute('src','https://img.pokemondb.net/artwork/avif/'+response.data.pokemonName.toLowerCase()+'.avif');
-				// cardTitlePokemonName.textContent = response.data.pokemonName;
 				setflavor_text(response.data.species);   
 				setmoves(response.data.moves);   
 				setstats(response.data.stats);   
 				setabilities(response.data.abilities);
 				setpokemonTypes(response.data.types);
 				setpokemonNameForCard(response.data.name);
-				// get_pokemon_advantages(response.data.pokemonTypes);
-				// get_pokemon_disadvantages(response.data.pokemonTypes);
+				setevolution(response.data.species);
+				setrelated(response.data.types);
 				// pokemon_evolution_trigger(response.data.pokemonSpecies);
-				// get_pokemon_cards(response.data.pokemonName);
 				// relatedTo.innerHTML='Pokemon related to '+response.data.pokemonName;
-				// flavor_text = response.data.pokemonSpecies;
 			})
 			.catch(() => { 
 				console.log('umay');
@@ -218,20 +217,10 @@ const Pokedex = () => {
 						<div className="row">
 							<div className="card my-1 px-1" id="secondCard">
 								<div className="card-body container-fluid">
-									
 									<div className="row">
 										<h6 className="card-title">Evolution</h6>
-											<button id="evolutionButton" data-custom="0" className="btn btn-dark" type="button"  data-mdb-toggle="collapse" data-mdb-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
-												Show&nbsp;&nbsp;<span id="EvolutionChainSectionBtn"></span>
-											</button>
-										<hr/>
-										<div className="collapse" id="collapseExample2">
-											<div id="EvolutionChainSection">
-												
-											</div>
-										</div>
+										<PokemonEvolutions evolution={evolution}/>
 									</div>
-
 								</div>
 							</div>
 						</div>
@@ -239,21 +228,9 @@ const Pokedex = () => {
 						<div className="row">
 							<div className="card my-1 px-1 pokedexCard3" id="secondCard">
 								<div className="card-body container-fluid">
-										
 									<div className="row">
 										<h6 className="card-title" id="relatedTo">Pokemon related to Pikachu</h6>
-										<button id="pokemonrelatedtobutton" data-custom="0" className="btn btn-dark" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
-											Show
-										</button>
-										<hr/>
-										<div className="collapse" id="collapseExample1">
-											<div className="splide">
-												<div className="splide__track">
-													<ul className="splide__list" id="splide1">
-													</ul>
-												</div>
-											</div>
-										</div>
+										<PokemonRelated related={related}/>
 									</div>
 								</div>
 							</div>
