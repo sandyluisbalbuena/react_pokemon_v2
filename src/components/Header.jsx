@@ -27,6 +27,12 @@ const Header = () => {
     eventBus.publish('searchPokemon', document.getElementById('pokemonNameInputSearch').value);
   }
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
 
   return (
 	<header>
@@ -66,7 +72,7 @@ const Header = () => {
 
           {activeLink === 'pokedex' && (
           <div id="pokemonSearchBar" className="d-flex input-group w-auto me-5">
-            <input id="pokemonNameInputSearch" type="search" className="form-control rounded" placeholder="Pokemon Name" aria-label="Search" aria-describedby="search-addon" required/>
+            <input id="pokemonNameInputSearch" type="search" className="form-control rounded" placeholder="Pokemon Name" aria-label="Search" aria-describedby="search-addon" onKeyPress={handleKeyPress} required/>
             <button className="btn bg-dark" onClick={handleSearch}>
               <i className="fas fa-search text-white"></i>
             </button>
@@ -76,7 +82,7 @@ const Header = () => {
           {activeLink === 'pokecard' && (
             <div id="pokemonSearchBar" className="d-flex input-group w-auto me-5">
             <input id="pokemonName" type="search" className="form-control rounded" placeholder="Pokemon Card Name" aria-label="Search" aria-describedby="search-addon" required/>
-            <button className="btn bg-dark" onClick={handleSearch}>
+            <button className="btn bg-dark">
               <i className="fas fa-search text-white"></i>
             </button>
             </div>

@@ -9,6 +9,7 @@ import PokemonStats from '../components/PokemonStats';
 import PokemonEvolutions from '../components/PokemonEvolutions';
 import PokemonRelated from '../components/PokemonRelated';
 import eventBus from '../eventBus';
+import PokemonVideos from '../components/PokemonVideos';
 
 const Pokedex = () => {
 
@@ -20,19 +21,24 @@ const Pokedex = () => {
 	let [stats, setstats] = useState([]);
 	let [evolution, setevolution] = useState([]);
 	let [related, setrelated] = useState([]);
+	let [pokemonId, setpokemonId] = useState([]);
+	// let [isLoading, setIsLoading] = useState(false);
 
 	useEffect(()=>{
-		pokemonSearch('magnemite');
+		pokemonSearch('pikachu');
 	}, []);
 
 	useEffect(() => {
 		eventBus.subscribe('searchPokemon', pokemonSearch);
+
 		return () => {
 			eventBus.unsubscribe('searchPokemon', pokemonSearch);
 		};
 	}, []);
 
 	const pokemonSearch = (pokemonNameName) =>{
+		// setIsLoading(true);
+
 		swal.close();
 		if(pokemonNameName == undefined && pokemonNameName == null){
 			var pname = document.getElementById('pokemonName');
@@ -40,6 +46,12 @@ const Pokedex = () => {
 		}
 		else{
 			var pokemonName = pokemonNameName;
+		}
+
+		let existingChart = Chart.getChart("pokemonStatscanvas");
+
+		if (existingChart) {
+			existingChart.destroy();
 		}
 	
 		window.scrollTo({
@@ -82,11 +94,7 @@ const Pokedex = () => {
 	
 			pokemonImage.classList.remove('animate__fadeIn');
 			pokemonImage.classList.add('animate__fadeIn');
-			let existingChart = Chart.getChart("pokemonStatscanvas");
-
-			if (existingChart) {
-				existingChart.destroy();
-			}
+			
 
 			// let relatedTo = document.getElementById('relatedTo');
 			let cardTitlePokemonName = document.getElementById('cardTitlePokemonName');
@@ -121,6 +129,7 @@ const Pokedex = () => {
 				setpokemonNameForCard(response.data.name);
 				setevolution(response.data.species);
 				setrelated(response.data.types);
+				setpokemonId(response.data.id);
 				// pokemon_evolution_trigger(response.data.pokemonSpecies);
 				// relatedTo.innerHTML='Pokemon related to '+response.data.pokemonName;
 			})
@@ -136,12 +145,19 @@ const Pokedex = () => {
 			})
 			.then(() => { 
 			})
+		})
+		.finally(() => {
+			// setIsLoading(false);
 		});
 	}
 
 
 	return (
 		<div className="container">
+			{/* {isLoading && (
+				<div className="maskForPokemonSearch">
+				</div>
+			)} */}
 
 			<section className="row mt-5">
 			</section>
@@ -150,7 +166,7 @@ const Pokedex = () => {
 
 				<div className="col-12 col-lg-3 mt-2">
 					<div className='pokedex-sidenav'>
-						<PokemonImage flavor_text={flavor_text} pokemonTyping={pokemonTypes}/>
+						<PokemonImage flavor_text={flavor_text} pokemonTyping={pokemonTypes} pokemonId={pokemonId}/>
 					</div>
 				</div>
 
@@ -235,8 +251,12 @@ const Pokedex = () => {
 				</div>
 			</section>
 
-			<section className="row mb-5">
+			<section className="row">
 				<CardSplide pokemonName={pokemonNameForCard}/>
+			</section>
+
+			<section className="row mb-5">
+				<PokemonVideos pokemonName={pokemonNameForCard}/>
 			</section>
 		</div>
 	)

@@ -17,8 +17,6 @@ const PokemonRelated = (props) => {
       let newtyping = [];
       newtyping = props.related.map((type) => type.type.name);
 
-      console.log('type',newtyping);
-
       const pokemonrelatedtobutton = document.getElementById('pokemonrelatedtobutton');
 
 
@@ -37,7 +35,6 @@ const PokemonRelated = (props) => {
 
   function get_pokemon_related(pokemonTypes) {
 
-    console.log('umay');
 
     if (document.getElementById('pokemonrelatedtobutton').getAttribute('data-custom') === '0') {
       splider.innerHTML = `<div class="spinner-border spinner-border-sm mt-2" role="status">
@@ -79,8 +76,6 @@ const PokemonRelated = (props) => {
 
                 if (array1.some((item) => array2.includes(item))) {
                   let commonType = array1.filter((item) => array2.includes(item));
-
-                  console.log(commonType);
 
                   let newImg = document.createElement('img');
                   newImg.setAttribute('src', `https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/${response.data.id.toString().padStart(3, '0')}.png`);
