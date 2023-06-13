@@ -10,6 +10,8 @@ import PokemonEvolutions from '../components/PokemonEvolutions';
 import PokemonRelated from '../components/PokemonRelated';
 import eventBus from '../eventBus';
 import PokemonVideos from '../components/PokemonVideos';
+import queryString from 'query-string';
+
 
 const Pokedex = () => {
 
@@ -23,9 +25,21 @@ const Pokedex = () => {
 	let [related, setrelated] = useState([]);
 	let [pokemonId, setpokemonId] = useState([]);
 	// let [isLoading, setIsLoading] = useState(false);
+	let pokemonName2;
+
 
 	useEffect(()=>{
-		pokemonSearch('pikachu');
+		const parsed = queryString.parse(window.location.search);
+  		var pokemonNameName = parsed.pokemonName;
+
+		if(pokemonNameName == undefined && pokemonNameName == null){
+			pokemonName2 = 'charizard';
+		}
+		else{
+			pokemonName2 = pokemonNameName;
+		}
+
+		pokemonSearch(pokemonName2);
 	}, []);
 
 	useEffect(() => {

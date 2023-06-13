@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import PokedexContext from '../PokedexContext';
 import eventBus from '../eventBus';
 
@@ -8,6 +8,8 @@ const Header = () => {
   const pokemonSearch = useContext(PokedexContext);
 
   let [activeLink, setActiveLink] = useState('');
+  const location = useLocation();
+
 
   let handleNavLinkClick = (link) => {
     setActiveLink(link);
@@ -20,6 +22,13 @@ const Header = () => {
       setActiveLink(storedActiveLink);
     }
   }, []);
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    // Extract the link name from the current path
+    const link = currentPath.substring(1);
+    setActiveLink(link);
+  }, [location.pathname]);
 
 
   const handleSearch = () => {

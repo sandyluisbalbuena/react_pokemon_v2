@@ -73,7 +73,7 @@ const PokemonVideos = (props) => {
 		}
 		else{
 			var splideCards = new Splide( '#splideVideos', {
-				perPage: 3,
+				perPage: 5,
 				type   : 'loop',
 				focus  : 'center',
 				pagination: false,
